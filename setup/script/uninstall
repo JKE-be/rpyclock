@@ -1,0 +1,15 @@
+#! /bin/sh
+
+set -e
+
+cd "$(dirname "$0")/.."
+
+echo "=> Stopping service rpyclock...\n"
+sudo update-rc.d rpyclock.sh remove
+sudo /etc/init.d/rpyclock.sh stop
+
+echo "=> Removing rpyclock boot...\n"
+sudo rm -f /usr/local/bin/rpyclock-boot.py 
+sudo rm -f /etc/init.d/rpyclock.sh 
+
+echo "Rpyclock boot uninstalled.\n"

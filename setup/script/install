@@ -1,0 +1,17 @@
+#! /bin/sh
+
+set -e
+
+cd "$(dirname "$0")/.."
+
+echo "=> Installing rpyclock...\n"
+sudo ln -srf rpyclock-boot.py /usr/local/bin/rpyclock-boot.py
+
+echo "=> Copy rpyclock boot...\n"
+sudo ln -srf rpyclock.sh /etc/init.d/rpyclock.sh
+
+echo "=> Starting rpyclock boot...\n"
+sudo update-rc.d rpyclock.sh defaults
+sudo /etc/init.d/rpyclock.sh start
+
+echo "Rpyclock installed.\n"
