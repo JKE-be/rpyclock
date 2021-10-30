@@ -1,18 +1,24 @@
 #!/usr/bin/env python3
 
-import random
-import RPi.GPIO as GPIO
-import time
 from rpi_ws281x import *
 
-LED_COUNT      = 101      # Number of LED pixels.
-LED_PIN        = 18      # GPIO pin connected to the pixels (18 uses PWM!).
-LED_FREQ_HZ    = 800000  # LED signal frequency in hertz (usually 800khz)
-LED_DMA        = 10      # DMA channel to use for generating signal (try 10)
-LED_BRIGHTNESS = 255     # Set to 0 for darkest and 255 for brightest
-LED_INVERT     = False   # True to invert the signal (when using NPN transistor level shift)
-LED_CHANNEL    = 0       # set to '1' for GPIOs 13, 19, 41, 45 or 53
-LED_BY_ROW     = 10
+import RPi.GPIO as GPIO
+import socket
+import time
+import random
+
+LED_OFFSET = 1 # First led out of 10/10
+LED_COUNT = 100 + LED_OFFSET
+LED_PIN = 18  # GPIO pin connected to the pixels (18 uses PWM!).
+LED_BY_ROW = 10
+
+
+def get_ip(split=' '):
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect(("8.8.8.8", 80))
+    ip = s.getsockname()[0]
+    s.close()
+    return ip.split(split)
 
 
 def clear():
@@ -21,6 +27,7 @@ def clear():
         strip.setPixelColorRGB(led, 0, 0, 0, 0)
         led += 1
     strip.show()
+
 
 def randcolor():
     return Color(
@@ -52,9 +59,10 @@ def pos(i):
 GPIO.setwarnings(True)
 GPIO.setmode(GPIO.BOARD)
 
-strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL)
+strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN)
 strip.begin()
 strip.show()
+
 
 clear()
 
@@ -63,4 +71,17 @@ for r in range(0, LED_COUNT):
     strip.show()
     time.sleep(0.025)
 
+clear()
+
+colors = [Color(255, 255, 255, 1), Color(255, 0, 0), Color(0, 255, 0), Color(0, 0, 255)]
+
+current_led = 1
+for i, subip in enumerate(get_ip('.')):
+    for char in subip:
+        for n in range(int(char)):
+            strip.setPixelColor(pos(current_led + n), colors[i])
+        current_led = current_led + n + 2
+    current_led = (current_led + 9) // LED_BY_ROW * LED_BY_ROW + 1  # go to next line
+strip.show()
+time.sleep(10)
 clear()
