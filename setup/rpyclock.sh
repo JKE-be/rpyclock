@@ -1,7 +1,7 @@
 #! /bin/sh
 
 ### BEGIN INIT INFO
-# Provides:          rpyclock-boot.py
+# Provides:          rpyclockboot.py
 # Required-Start:    $remote_fs $syslog
 # Required-Stop:     $remote_fs $syslog
 # Default-Start:     2 3 4 5
@@ -11,12 +11,12 @@
 
 case "$1" in
   start)
-    echo "Starting rpyclock-boot.py"
-    /usr/local/bin/rpyclock-boot.py &
+    echo "Starting rpyclockboot.py"
+    /usr/local/bin/rpyclockboot.py &
     ;;
   stop)
-    echo "Stopping rpyclock-boot.py"
-    pkill -f /usr/local/bin/rpyclock-boot.py
+    echo "Stopping rpyclockboot.py"
+    pkill -f /usr/local/bin/rpyclockboot.py
     ;;
   *)
     echo "Usage: /etc/init.d/rpyclock.sh {start|stop}"

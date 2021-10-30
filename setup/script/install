@@ -5,7 +5,7 @@ set -e
 cd "$(dirname "$0")/.."
 
 echo "=> Installing rpyclock...\n"
-sudo ln -srf rpyclock-boot.py /usr/local/bin/rpyclock-boot.py
+sudo ln -srf rpyclockboot.py /usr/local/bin/rpyclockboot.py
 
 echo "=> Copy rpyclock boot...\n"
 sudo ln -srf rpyclock.sh /etc/init.d/rpyclock.sh
