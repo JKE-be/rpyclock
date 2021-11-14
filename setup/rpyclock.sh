@@ -12,11 +12,18 @@
 case "$1" in
   start)
     echo "Starting rpyclockboot.py"
-    /usr/local/bin/rpyclockboot.py &
+    sudo /usr/local/bin/rpyclockboot.py &
     ;;
   stop)
     echo "Stopping rpyclockboot.py"
-    pkill -f /usr/local/bin/rpyclockboot.py
+    sudo pkill -f /usr/local/bin/rpyclockboot.py
+    ;;
+  restart)
+    echo "Stopping rpyclockboot.py"
+    sudo pkill -f /usr/local/bin/rpyclockboot.py
+
+    echo "Starting rpyclockboot.py"
+    sudo /usr/local/bin/rpyclockboot.py &
     ;;
   *)
     echo "Usage: /etc/init.d/rpyclock.sh {start|stop}"
